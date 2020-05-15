@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Handwritten Digit Recognition using Keras</title>
+	<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300">
+</head>
+<body>
+
+
+		<div class="centered">
+			<h1 style="margin-top:30px">Digit Recognition using Keras</h1>
+
+			<canvas id="canvas" width="280" height="280"></canvas>
+		</div>
+
+		<div class="centered">
+			<input type="button" class="myButton" value="Predict" style="width:80px; height:25px;">
+			<input type="button" id="clearButton" value="Clear" style="width:80px; height:25px;">
+		</div>
+
+		<div class="centered">
+			<h1 id="result"></h1>
+		</div>
+
+		<div class="user-input centered">
+			<br/><br/><br/>
+			<form action="{{ url_for('predict')}}" method="GET">
+				<input name="user-input" type="text" style="height:30px;" placeholder="Enter correct result title">
+				<br/>
+				<button type="submit" class="btn btn-success">Submit</button>
+			</form>
+		</div>
+
+
+  		<script src="{{url_for('static',filename='jquery-3.2.0.min.js')}}"></script>
+	    <script src="{{url_for('static',filename='index.js')}}"></script>
+	    <script type="text/javascript">
+	   		$(".myButton").click(function(){
+	   			$('#result').text('  Predicting...');
+	   			var $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+	   			var canvasObj = document.getElementById("canvas");
+	   			var img = canvasObj.toDataURL('image/png');
+	   			$.ajax({
+	   				type: "POST",
+	   				url: $SCRIPT_ROOT + "/predict/",
+	   				data: img,
+	   				success: function(data){
+	   					$('#result').text('Predicted Output: ' + data);
+	   				}
+	   			});
+	   		});
+	   </script>
+</body>
+</html>
