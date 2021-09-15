@@ -38,17 +38,7 @@ def predict():
     # plt.imsave(open('output/img-{a}.jpg'.format(a=now), 'wb'), x)
     x = np.invert(x)
     x = resize(x, (28, 28))
-    # if user_input:
-    #     p = np.append(x.reshape(1,784), str(user_input))
-    #     with open('output/data.csv', 'a+', newline='') as write_obj:
-    #         # Create a writer object from csv module
-    #         csv_writer = csv.writer(write_obj)
-    #         # Add contents of list as last row in the csv file
-    #         csv_writer.writerow(p)
-    #     return render_template("index.html")
-    # print(x.shape)
-    # reshape image data for use in neural network
-    # y = x.reshape(1, 784)
+    
     out = modal.predict(x.reshape(1,28,28))
     response = np.argmax(out, axis=1)
     return str(response[0])
